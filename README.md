@@ -6,7 +6,7 @@ This script reads a CSV file containing product data and updates the Instabuy AP
 
 - CSV parsing and data cleaning using `pandas`
 - Handles promotion prices, stock, and activation flags
-- Sends requests in batches of 50 products
+- Sends requests in batches of 5000 products
 - Includes simple logging and error handling
 
 ## 🛠️ Technologies
@@ -45,7 +45,7 @@ This script reads a CSV file containing product data and updates the Instabuy AP
 
 ## 📝 Notes
 
-- The batch size is set to 50 to avoid `413 Payload Too Large` errors.
+- The batch size is set to 5000 to avoid `413 Payload Too Large` errors.
 - Promo price is only sent if greater than 0.
 - Dates are converted to ISO 8601 format (`YYYY-MM-DDTHH:MM:SS`).
 

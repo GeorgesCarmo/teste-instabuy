@@ -9,6 +9,13 @@ API_KEY = 'IGs8rlcEb0jUEgsNvzDsatF5gAvQ_8iGde-tZ-iwGFc'
 BATCH_SIZE = 5000
 
 def normalize_date(date_str):
+    '''
+    Convert date string to ISO format
+    params:
+        date_str (str): Date string to be normalized
+    returns:
+        str: Normalized date string in ISO format or None if invalid
+    '''
     if pd.isna(date_str):
         return None
     try:
@@ -17,6 +24,13 @@ def normalize_date(date_str):
         return None
 
 def load_and_clean_data():
+    '''
+    Load and clean data from CSV
+    params:
+        None
+    returns:
+        pd.DataFrame: Cleaned DataFrame
+    '''
     df = pd.read_csv(CSV_PATH, sep=';', decimal=',', on_bad_lines='skip')
     df['Preço regular'] = pd.to_numeric(df['Preço regular'], errors='coerce').fillna(0.0)
     df['Promocao'] = pd.to_numeric(df['Promocao'], errors='coerce').fillna(0.0)
@@ -27,6 +41,13 @@ def load_and_clean_data():
     return df
 
 def build_payload(row):
+    '''
+    Build payload for API request
+    params:
+        row (pd.Series): Row from DataFrame
+    returns:
+        dict: Payload for the product    
+    '''
     product = {
         "internal_code": str(row['Código interno']),
         "visible": row['ativo'],
@@ -40,6 +61,13 @@ def build_payload(row):
     return product
 
 def send_batch(products_batch):
+    '''
+    Send a batch of products to the API
+    params:
+        products_batch (list): List of product dictionaries
+    returns:
+        tuple: Status code and response from the API
+    '''
     headers = {
         'api-key': API_KEY,
         'Content-Type': 'application/json'
@@ -52,6 +80,13 @@ def send_batch(products_batch):
         return response.status_code, response.text
 
 def main():
+    '''
+    Main function to load data, process it, and send to API
+    params:
+        None
+    returns:
+        None
+    '''
     df = load_and_clean_data()
     products = [build_payload(row) for _, row in df.iterrows()]
 
